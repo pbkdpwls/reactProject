@@ -1,25 +1,68 @@
-import logo from './logo.svg';
 import './App.css';
+import Todo from './Todo'
+import AddTodo from './AddTodo.js';
+import React from 'react';
+import { Paper, List, Container } from "@material-ui/core";
+import { call } from './service/ApiService.js'
+class App extends React.Component { // 리액트 컴포넌트, 클래스로 작성 시 render() 함수 작성 필요
+  constructor(props) { // 생성자를 통해 매개변수를 Todo로 넘김
+    super(props); // 부모로 부터 물려받은 props로 props 오브젝트 초기화
+    this.state = {
+      items: [],
+    };
+  }
+  // Api Service 사용
+  componentDidMount() {
+    call("/todo", "GET", null).then((response) => 
+      this.setState({items:response.data})
+    );
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  add=(item)=>{
+    call("/todo", "POST", item).then((response) => 
+      this.setState({items:response.data})
+    );
+  };
+
+  delete = (item) => {
+    call("/todo", "DELETE", item).then((response) => 
+      this.setState({items:response.data})
+    );
+  };
+
+  update = (item) => {
+    call("/todo", "PUT", item).then((response) => 
+      this.setState({items:response.data})
+    );
+  };
+
+  render(){
+    // <Todo> 컴포넌트 배열 
+    var todoItems = this.state.items.length > 0&& (
+      <Paper stype={{ margin: 16 }}>
+        <List>
+          {this.state.items.map((item, idx) => ( // item 초기화, js가 제공하는 map 함수를 이용해 배열을 반복해 <Todo... /> 컴포넌트 생성
+            <Todo 
+                item={item} 
+                key={item.id}
+                delete={this.delete}
+                update={this.update}
+            />
+          ))}
+        </List>
+      </Paper>
+    );
+
+    // jsx 리턴 (js, html 동시에 사용 가능한 js 문법)
+    return (
+      <div className='App'>
+        <Container maxWidth="md">
+          <AddTodo add={this.add}/>
+          <div className='TodoList'>{todoItems}</div>
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default App;
