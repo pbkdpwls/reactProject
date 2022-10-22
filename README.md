@@ -1,9 +1,9 @@
 # 리액트 쇼핑몰 웹 응용 프로그램 개발 (Book Store)
 리액트로 백/프론트 구성하여 웹페이지 만드는 실습
+SPA(Single Page Application) 쇼핑몰 웹 응용 프로그램
 
-# SPA(Single Page Application) 쇼핑몰 웹 응용 프로그램
-
-# * 사용 기술 : React.js, 스프링 부트, 롬복, H2, Gradle
+## * 사용 기술 
+: React.js, 스프링 부트, 롬복, H2, Gradle
 
 ## 시연 영상 (코드 포함 녹화, 웹 시연은 2:20 부터)
 https://youtu.be/Aco3IAukk6s
